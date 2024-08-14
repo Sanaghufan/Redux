@@ -30,5 +30,15 @@ const history = []
 //important concept of immutability: you should not directly change the state
 //now to avoid multiple console log we have subscribe , it will run whenevr state is change
 setInterval(()=>{
-    store.dispatch({type:"incrementByAmount", payload:300})
+    store.dispatch(incrementByAmount(5));
 },3000)
+//Action Creators//for ease
+function increment(){
+    return {type:"increment"}
+}
+function decrement(){
+    return {type:"decrement"}
+}
+function incrementByAmount(value){
+    return {type:"incrementByAmount",payload:value}
+}
