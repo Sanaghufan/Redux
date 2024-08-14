@@ -5,7 +5,15 @@ function reducer(state = {amount:1}, action){//initial value of state is assigne
     if(action.type === 'increment'){
         //immutability
         //state.amount = state.amount+1
-        return {amount:state.amount+1}// this will be commented in immutability
+        return {amount:state.amount+1};// this will be commented in immutability
+    }
+    if(action.type === 'decrement'){
+      
+        return {amount:state.amount-1};// this will be commented in immutability
+    }
+    if(action.type === 'incrementByAmount'){
+       
+        return {amount:state.amount+action.payload};// this will be commented in immutability
     }
 
     return state;
@@ -22,5 +30,5 @@ const history = []
 //important concept of immutability: you should not directly change the state
 //now to avoid multiple console log we have subscribe , it will run whenevr state is change
 setInterval(()=>{
-    store.dispatch({type:"increment"})
+    store.dispatch({type:"incrementByAmount", payload:300})
 },3000)
