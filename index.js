@@ -1,5 +1,6 @@
-import {createStore } from 'redux';
-const store = createStore(reducer);
+import {createStore , applyMiddleware } from 'redux';
+import logger from 'redux-logger';
+const store = createStore(reducer,applyMiddleware(logger.default));
 function reducer(state = {amount:1}, action){//initial value of state is assigned as 1
     if(action.type === 'increment'){
         //immutability
@@ -11,11 +12,11 @@ function reducer(state = {amount:1}, action){//initial value of state is assigne
 }
 //console.log(store.getState());//action is not a part of redux , it is a convention that you have to send such type of objects{type:'increment'}
 const history = []
-store.subscribe(()=>{
-history.push(store.getState());
-console.log("History",history)
+//store.subscribe(()=>{
+// history.push(store.getState());
+ // console.log("History",history)
     // console.log(store.getState());
-})
+// })
 // store.dispatch({type:"increment"})
 //console.log(store.getState());
 //important concept of immutability: you should not directly change the state
