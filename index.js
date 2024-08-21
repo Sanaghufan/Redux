@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import logger from 'redux-logger';
-import thunk from 'redux-thunk';
+import {thunk} from 'redux-thunk';
 import axios from 'axios';
 
 //action name constants
@@ -18,7 +18,7 @@ const store = createStore(
     account: accountReducer,
     bonus: bonusReducer
   }),
-  applyMiddleware(logger.default, thunk.default)
+  applyMiddleware(logger.default, thunk)
 );
 
 const history = [];
