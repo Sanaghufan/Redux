@@ -1,48 +1,42 @@
-import {createStore , applyMiddleware } from 'redux';
-import logger from 'redux-logger';
+import { createStore, applyMiddleware } from "redux";
+import axios from "axios";
+import logger from "redux-logger";
+import {thunk} from "redux-thunk"
+const init = "init";
 const inc = "increment";
 const dec = "decrement";
-const incByAmount = "incrementByAmount"
-const store = createStore(reducer,applyMiddleware(logger.default));
+const incByAmount = "incrementByAmount";
+const store = createStore(reducer, applyMiddleware(logger.default,thunk));
+//we will assume that we will initialize the amount with the user's amount .  and let's say first id from json data will be our user
+function reducer(state = { amount: 1 }, action) {
+  switch (action.type) {
+    case init:
+      return { amount: action.payload };
+    case inc:
+      return { amount: state.amount + 1 };
+    case dec:
+      return { amount: state.amount - 1 };
+    case incByAmount:
+      return { amount: state.amount + action.payload };
+    default:
+      return state;
+  }
+}
 
-function reducer(state = {amount:1}, action){//initial value of state is assigned as 1
-    if(action.type === inc){
-        //immutability
-        //state.amount = state.amount+1
-        return {amount:state.amount+1};// this will be commented in immutability
-    }
-    if(action.type === dec){//manlo aap decrement ka r type krna bhul gae to ye chalega hi nhi iske liye action names ko constant banado
-      
-        return {amount:state.amount-1};// this will be commented in immutability
-    }
-    if(action.type === incByAmount){
-       
-        return {amount:state.amount+action.payload};// this will be commented in immutability
-    }
+setInterval(() => {
+  store.dispatch(initUser);
+}, 3000);
 
-    return state;
+async function initUser(dispatch,getState) {
+  const { data } = await axios.get("http://localhost:3000/account/1");
+  return dispatch({ type: init, payload: data.amount });
 }
-//console.log(store.getState());//action is not a part of redux , it is a convention that you have to send such type of objects{type:'increment'}
-// const history = []
-//store.subscribe(()=>{
-// history.push(store.getState());
- // console.log("History",history)
-    // console.log(store.getState());
-// })
-// store.dispatch({type:"increment"})
-//console.log(store.getState());
-//important concept of immutability: you should not directly change the state
-//now to avoid multiple console log we have subscribe , it will run whenevr state is change
-setInterval(()=>{
-    store.dispatch(incrementByAmount(5));
-},3000)
-//Action Creators//for ease
-function increment(){
-    return {type:"increment"}
+function increment() {
+  return { type: inc };
 }
-function decrement(){
-    return {type:"decrement"}
+function decrement() {
+  return { type: dec };
 }
-function incrementByAmount(value){
-    return {type:"incrementByAmount",payload:value}
+function incrementByAmount(value) {
+  return { type: incByAmount, payload: value };
 }
