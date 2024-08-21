@@ -24,12 +24,13 @@ function reducer(state = { amount: 1 }, action) {
 }
 
 setInterval(() => {
-  store.dispatch(getUser);
+  store.dispatch(getUser(1));
 }, 3000);
 
-async function getUser(dispatch,getState) {
-  const { data } = await axios.get("http://localhost:3000/account/1");
-  dispatch(initUser(data.amount));
+ function getUser(id) {
+  return async(dispatch,getState)=>{const { data } = await axios.get(`http://localhost:3000/account/${id}`);
+  dispatch(initUser(data.amount));}
+  
 }
 function initUser(value){
   return { type: init, payload: value };
